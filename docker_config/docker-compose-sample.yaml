@@ -1,0 +1,64 @@
+version: "3.7"
+services:
+  lumen-container:
+    image: lumen-container:tag-name
+    container_name: lumen-container
+    restart: unless-stopped
+    environment:
+      APP_KEY: " "
+      DB_HOST: "db"
+      DB_CONNECTION: " "
+      DB_DATABASE: " "
+      DB_USERNAME: " "
+      DB_PASSWORD: " "
+      DB_TIMEZONE: "+07:00"
+      DB_PORT: 3306
+      CACHE_DRIVER: " "
+      REDIS_HOST: 127.0.0.1
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
+      REDIS_CLIENT: "phpredis"
+      REDIS_CACHE_DB: 0
+      RABBITMQ_HOST: " "
+      RABBITMQ_PORT: " "
+      RABBITMQ_USER: " "
+      RABBITMQ_PASS: " "
+    volumes:
+      - lumen_storage:/var/www/html/storage/app
+      - lumen_logs:/var/www/html/storage/logs
+    ports:
+      - 5000:80
+    networks:
+      - lumen-container
+      
+  lumen-container-db:
+    image: mariadb
+    container_name: lumen-container-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: " "
+      MYSQL_DATABASE: " "
+      MYSQL_USER: " "
+      MYSQL_PASSWORD: " "
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - lumen-container
+
+  lumen-container-adminer:
+    image: adminer
+    container_name: lumen-container-adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - lumen-container
+
+volumes:
+  mariadb_data:
+  lumen_storage:
+  lumen_logs:
+
+networks:
+  lumen-container:
+    driver: bridge

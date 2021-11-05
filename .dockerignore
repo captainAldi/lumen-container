@@ -1,0 +1,8 @@
+.env
+vendor/
+docker_config/staging/docker-compose.yaml
+
+storage/app/*
+!storage/app/.gitignore
+
+dump.rdb
